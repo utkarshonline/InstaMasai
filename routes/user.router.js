@@ -3,7 +3,9 @@ const { UserModel } = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { BlacklistModel } = require("../models/blacklist.model");
+const { auth } = require("../middleware/auth.middleware");
 const userRouter = express.Router();
+userRouter.use(auth);
 
 userRouter.post("/register", async (req, res) => {
   const { name, email, gender, pass, age, city } = req.body;
