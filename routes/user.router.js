@@ -38,6 +38,27 @@ userRouter.post("/register", async (req, res) => {
   }
 });
 
+userRouter.post("/login", async (req, res) => {
+  const { email, pass } = req.body;
+  try {
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      bcrypt.compare(pass, user.pass, (err, result) => {
+        if (result) {
+          const token = jwt.sign({ userID: user._id }, "masai", {
+            expiresIn: "7d",
+          });
+          res.status(200).json({ msg: "Login done", token });
+        } else {
+          res.status(200).json({ msg: "wrong pass" });
+        }
+      });
+    }
+  } catch (err) {
+    res.status(400).json({ msg: "plese register first" });
+  }
+});
+
 module.exports = {
   userRouter,
 };
