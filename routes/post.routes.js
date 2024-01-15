@@ -53,3 +53,7 @@ postRouter.delete("/delete/:postId", async (req, res) => {
     res.status(400).json({ err: err });
   }
 });
+
+module.exports = {
+  postRouter,
+};
