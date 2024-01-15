@@ -34,6 +34,8 @@ postRouter.patch("/update/:postId", async (req, res) => {
     if (post.userId === req.body.userId) {
       await PostModel.findByIdAndUpdate({ _id: postId }, payload);
       res.status(200).json({ msg: "user has been updated" });
+    } else {
+      res.status(403).json({ msg: "Unauthorized" });
     }
   } catch (err) {
     res.status(400).json({ err: err });
@@ -48,6 +50,8 @@ postRouter.delete("/delete/:postId", async (req, res) => {
     if (post.userId === req.body.userId) {
       await PostModel.findByIdAndDelete({ _id: postId });
       res.status(200).json({ msg: "user has been deletede" });
+    } else {
+      res.status(403).json({ msg: "Unauthorized" });
     }
   } catch (err) {
     res.status(400).json({ err: err });
