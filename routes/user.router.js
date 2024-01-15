@@ -2,7 +2,7 @@ const express = require("express");
 const { UserModel } = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const { BlacklistModel } = require("../models/blacklist.model");
 const userRouter = express.Router();
 
 userRouter.post("/register", async (req, res) => {
@@ -56,6 +56,17 @@ userRouter.post("/login", async (req, res) => {
     }
   } catch (err) {
     res.status(400).json({ msg: "plese register first" });
+  }
+});
+
+userRouter.get("/logout", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  try {
+    const blacklist = new BlacklistModel({ token });
+    await blacklist.save();
+    res.status(200).json({ msg: "logged out" });
+  } catch (err) {
+    res.status(400).json("msg:err");
   }
 });
 
